@@ -1,10 +1,10 @@
 "use client";
-import styles from "./page.module.css";
+import styles from "../page.module.css";
 import Image from "next/image";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import countryValue from "./country";
+import countryValue from "../country";
 
 export default function Home() {
   const [name, setName] = useState("");
@@ -44,13 +44,28 @@ export default function Home() {
         const response = await fetch(`https://api.nationalize.io?name=${name}`);
         console.log(response.status);
         const data = await response.json();
-        const countryName = data.country[0].country_id;
-
-        let a = new Intl.DisplayNames(["en"], { type: "region" });
-
-        const countryDisplayName = a.of(countryName);
-
-        setCountry(countryDisplayName);
+        // console.log({
+        //   MaximumAttempts: response.headers.get("x-rate-limit-limit"),
+        // });
+        // console.log({
+        //   RemainingAttempts: response.headers.get("x-rate-limit-remaining"),
+        // });
+        let dataValue = data.country;
+        const countryNames = countryValue();
+        let countryID = [];
+        let countriesNameValue = [];
+        dataValue.map((value) => {
+          countryID.push(value.country_id);
+        });
+        countryNames.map((country) => {
+          countryID.map((id) => {
+            if (country.code === id) {
+              countriesNameValue.push(country.name);
+            }
+          });
+        });
+        console.log(countriesNameValue);
+        setCountry(countriesNameValue);
       } catch (error) {
         console.error("Error fetch data wait for response", error);
       }
