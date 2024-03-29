@@ -1,16 +1,16 @@
 "use client";
 import styles from "./page.module.css";
 import Image from "next/image";
+import logo from "../../public/220.jpg";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import countryValue from "./country";
 
 export default function Home() {
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("");
-  const [country, setCountry] = useState("");
+  const [country, setCountry] = useState([]);
   const [loading, setloading] = useState(false);
   const data = name && age && gender && country;
 
@@ -44,15 +44,15 @@ export default function Home() {
         const response = await fetch(`https://api.nationalize.io?name=${name}`);
         console.log(response.status);
         const data = await response.json();
-        const countryName = data.country[0].country_id;
 
-        let a = new Intl.DisplayNames(["en"], { type: "region" });
+        let countryName = data.country[0].country_id;
 
-        const countryDisplayName = a.of(countryName);
+        let countryNames = new Intl.DisplayNames(["en"], { type: "region" });
+        const countryDisplayName = countryNames.of(countryName);
 
         setCountry(countryDisplayName);
       } catch (error) {
-        console.error("Error fetch data wait for response", error);
+        console.error("Error fetch data", error);
       }
     }
   };
@@ -76,14 +76,7 @@ export default function Home() {
 
   return (
     <div className={styles.main}>
-      <Image
-        className={styles.logo}
-        src="/220.jpg"
-        alt="hy-vee Logo"
-        width={370}
-        height={180}
-        priority
-      />
+      <Image src={logo} alt="hy-vee logo" width={450} height={250} />
       <ToastContainer />
 
       <form onSubmit={handleSubmit}>
