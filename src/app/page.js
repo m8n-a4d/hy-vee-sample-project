@@ -15,10 +15,9 @@ import {
   Card,
   CardHeader,
   CardBody,
-  CardTitle,
   CardText,
+  Spinner,
 } from "reactstrap";
-// import styles from "../page.module.css";
 
 const Home = () => {
   const [name, setName] = useState("");
@@ -172,7 +171,8 @@ const Home = () => {
             </FormGroup>
           </>
         </Form>
-        {loading && <p>Loading...</p>}
+
+        {loading && <Spinner>Loading...</Spinner>}
         {showCard && (
           <Card
             className="my-1"
@@ -180,8 +180,8 @@ const Home = () => {
               width: "20rem",
               left: "14rem",
               top: "1rem",
-              backgroundColor: "#767676",
-              borderBlockColor: "#000000",
+              backgroundColor: "#a7a7a7",
+              borderBlockColor: "#bfbfbf",
             }}
           >
             <CardHeader tag="h3" style={{ color: "#FFFFFF" }}>
